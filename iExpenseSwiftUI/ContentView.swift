@@ -14,6 +14,7 @@ class User: ObservableObject {
 
 struct ContentView: View {
     @StateObject private var user = User()
+    @State private var showingSheet = false
     
     var body: some View {
         VStack {
@@ -21,6 +22,13 @@ struct ContentView: View {
 
             TextField("First name", text: $user.firstName)
             TextField("Last name", text: $user.lastName)
+            
+            Button("Show Sheet") {
+                showingSheet.toggle()
+            }
+        }
+        .sheet(isPresented: $showingSheet) {
+            SecondView(name: user.firstName)
         }
     }
 }
