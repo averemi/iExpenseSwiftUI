@@ -16,20 +16,44 @@ struct ContentView: View {
     @StateObject private var user = User()
     @State private var showingSheet = false
     
+    @State private var numbers = [Int]()
+    @State private var currentNumber = 1
+    
     var body: some View {
-        VStack {
-            Text("Your name is \(user.firstName) \(user.lastName).")
+        NavigationView {
+            VStack {
+                Text("Your name is \(user.firstName) \(user.lastName).")
 
-            TextField("First name", text: $user.firstName)
-            TextField("Last name", text: $user.lastName)
-            
-            Button("Show Sheet") {
-                showingSheet.toggle()
+                TextField("First name", text: $user.firstName)
+                TextField("Last name", text: $user.lastName)
+                
+                Button("Show Sheet") {
+                    showingSheet.toggle()
+                }
+                
+                List {
+                    ForEach(numbers, id: \.self) {
+                        Text("Row \($0)")
+                    }
+                    .onDelete(perform: removeRows)
+                }
+
+                Button("Add Number") {
+                    numbers.append(currentNumber)
+                    currentNumber += 1
+                }
+            }
+            .toolbar {
+                EditButton()
+            }
+            .sheet(isPresented: $showingSheet) {
+                SecondView(name: user.firstName)
             }
         }
-        .sheet(isPresented: $showingSheet) {
-            SecondView(name: user.firstName)
-        }
+    }
+    
+    func removeRows(at offsets: IndexSet) {
+        numbers.remove(atOffsets: offsets)
     }
 }
 
