@@ -7,19 +7,17 @@
 
 import SwiftUI
 
-class User: ObservableObject {
-    @Published var firstName = "Bilbo"
-    @Published var lastName = "Baggins"
+struct User: Codable {
+    var firstName = "Bilbo"
+    var lastName = "Baggins"
 }
 
 struct ContentView: View {
-    @StateObject private var user = User()
+    @State private var user = User(firstName: "Svinchik", lastName: "Porosiatko")
     @State private var showingSheet = false
     
     @State private var numbers = [Int]()
     @State private var currentNumber = 1
-    
-    @AppStorage("tapCount") private var tapCount = 0
     
     var body: some View {
         NavigationView {
@@ -33,6 +31,14 @@ struct ContentView: View {
                     showingSheet.toggle()
                 }
                 
+                Button("Save User") {
+                    let encoder = JSONEncoder()
+                    
+                    if let data = try? encoder.encode(user) {
+                        UserDefaults.standard.set(data, forKey: "UserData")
+                    }
+                }
+                
                 List {
                     ForEach(numbers, id: \.self) {
                         Text("Row \($0)")
@@ -43,10 +49,6 @@ struct ContentView: View {
                 Button("Add Number") {
                     numbers.append(currentNumber)
                     currentNumber += 1
-                }
-                
-                Button("Tap count: \(tapCount)") {
-                    tapCount += 1
                 }
             }
             .toolbar {
