@@ -19,6 +19,8 @@ struct ContentView: View {
     @State private var numbers = [Int]()
     @State private var currentNumber = 1
     
+    @AppStorage("tapCount") private var tapCount = 0
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -41,6 +43,10 @@ struct ContentView: View {
                 Button("Add Number") {
                     numbers.append(currentNumber)
                     currentNumber += 1
+                }
+                
+                Button("Tap count: \(tapCount)") {
+                    tapCount += 1
                 }
             }
             .toolbar {
