@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Expenses {
-    var items = [ExpenseItem]() {
+class Expenses: ObservableObject {
+    @Published var items = [ExpenseItem]() {
         didSet {
             if let encoded = try? JSONEncoder().encode(items) {
                 UserDefaults.standard.set(encoded, forKey: "Items")

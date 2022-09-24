@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var expenses = Expenses()
+    @StateObject var expenses = Expenses()
     @State private var showingAddExpense = false
 
     var body: some View {
@@ -37,7 +37,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showingAddExpense) {
-                AddView(expenses: $expenses)
+                AddView(expenses: expenses)
             }
         }
     }
