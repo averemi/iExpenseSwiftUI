@@ -11,7 +11,7 @@ import SwiftUI
 struct AddView: View {
     @State private var name = ""
     @State private var type: ExpenseType = .personal
-    @State private var amount = 0.0
+    @State private var amount = 0
     @Binding var expenses: Expenses
     @Environment(\.dismiss) var dismiss
 
