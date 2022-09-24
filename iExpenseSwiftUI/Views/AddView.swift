@@ -12,7 +12,8 @@ struct AddView: View {
     @State private var name = ""
     @State private var type: ExpenseType = .personal
     @State private var amount = 0.0
-    @State var expenses: Expenses
+    @Binding var expenses: Expenses
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationView {
@@ -27,12 +28,19 @@ struct AddView: View {
                 TextField("Amount", value: $amount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
             }
             .navigationTitle("Add new expense")
+            .toolbar {
+                Button("Save") {
+                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(item)
+                    dismiss()
+                }
+            }
         }
     }
 }
 
 struct AddView_Previews: PreviewProvider {
     static var previews: some View {
-        AddView(expenses: Expenses())
+        AddView(expenses: .constant(Expenses()))
     }
 }
